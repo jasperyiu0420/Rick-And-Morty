@@ -6,8 +6,8 @@ import Link from 'next/link'
 import React from 'react'
 
 
-export async function getServerSideProps(context) {
-  const { episodeID } = context.query
+export async function getStaticProps(context) {
+  const { episodeID } = context.params;
   try {
     const response = await client.query({
       query: gql`
@@ -28,11 +28,11 @@ export async function getServerSideProps(context) {
     `,
     });
 
-    console.log("********************************************", response)
     return {
       props: {
         episodeDetail: response.data.episode,
       },
+      revalidate: 60, // In seconds
     };
   }
   catch (error) {
@@ -43,6 +43,21 @@ export async function getServerSideProps(context) {
       }
     }
   }
+}
+
+export async function getStaticPaths() {
+  const response = await client.query({
+    query: gql`
+    query CountEpisode {
+      episodes{
+          info {
+            count
+          }
+      }
+    }`
+  })
+  const paths = [...Array(response.data.episodes.info.count).keys()].map(path => ({ params: { episodeID: (path + 1).toString() } }))
+  return { paths, fallback: 'blocking' }
 }
 
 function EpisodeDetail({ episodeDetail }) {
