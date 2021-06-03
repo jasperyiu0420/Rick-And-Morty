@@ -57,7 +57,7 @@ export async function getStaticPaths() {
     }`
   })
   const paths = [...Array(response.data.episodes.info.count).keys()].map(path => ({ params: { episodeID: (path + 1).toString() } }))
-  return { paths, fallback: 'blocking' }
+  return { paths, fallback: false }
 }
 
 function EpisodeDetail({ episodeDetail }) {
