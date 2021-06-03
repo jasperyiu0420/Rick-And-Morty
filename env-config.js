@@ -1,6 +1,4 @@
-  
-const prod = process.env.NODE_ENV === 'production'
 
 module.exports = {
-  'process.env.BACKEND_URL': prod ? '/rick-and-morty' : '',
+  'process.env.BACKEND_URL': '/rick-and-morty',
 }
