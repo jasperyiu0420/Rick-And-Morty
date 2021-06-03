@@ -8,9 +8,8 @@ import React from 'react'
 
 export async function getStaticProps(context) {
   const { episodeID } = context.params;
-  try {
-    const response = await client.query({
-      query: gql`
+  const response = await client.query({
+    query: gql`
       query EpisodeDetail {
         episode(id: ${episodeID}){
             name
@@ -26,23 +25,14 @@ export async function getStaticProps(context) {
         }
       }
     `,
-    });
+  });
 
-    return {
-      props: {
-        episodeDetail: response.data.episode,
-      },
-      revalidate: 60, // In seconds
-    };
-  }
-  catch (error) {
-    console.log(error)
-    return {
-      props: {
-        episodeDetail: []
-      }
-    }
-  }
+  return {
+    props: {
+      episodeDetail: response.data.episode,
+    },
+    revalidate: 60, // In seconds
+  };
 }
 
 export async function getStaticPaths() {
@@ -61,20 +51,6 @@ export async function getStaticPaths() {
 }
 
 function EpisodeDetail({ episodeDetail }) {
-  if (episodeDetail.length === 0) {
-    return (
-      <DefaultLayout>
-        <Link
-          href={'/'}
-          passHref>
-          <Button>Back</Button>
-        </Link>
-        <Grid container spacing={3}>
-          <Grid item xs={12}>No Data Exist</Grid>
-        </Grid>
-      </DefaultLayout>
-    )
-  }
   return (
     <DefaultLayout>
       <Link
