@@ -3,6 +3,7 @@ import client from "../../apollo-client";
 import DefaultLayout from '../../Component/DefaultLayout'
 import { Avatar, Card, CardHeader, CardContent, List, ListItem, ListItemText, Grid, Button } from "@material-ui/core";
 import Link from 'next/link'
+import React from 'react'
 
 
 export async function getServerSideProps(context) {
